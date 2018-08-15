@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SVM_HOG", "SVM_HOG\SVM_HOG.vcxproj", "{BCBCA76A-53D3-4913-BBE0-6E7CB744FA69}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCBCA76A-53D3-4913-BBE0-6E7CB744FA69}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BCBCA76A-53D3-4913-BBE0-6E7CB744FA69}.Debug|Win32.Build.0 = Debug|Win32
+		{BCBCA76A-53D3-4913-BBE0-6E7CB744FA69}.Release|Win32.ActiveCfg = Release|Win32
+		{BCBCA76A-53D3-4913-BBE0-6E7CB744FA69}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
