@@ -1,0 +1,21 @@
+﻿生成启动时间为 2018/8/15 21:46:06。
+     1>项目“C:\Users\Administrator\Desktop\test\platedetect_me\platedetect_me_cpp\platedetect_me_cpp\platedetect_me_cpp.vcxproj”在节点 2 上(build 个目标)。
+     1>PrepareForBuild:
+         正在创建目录“C:\Users\Administrator\Desktop\test\platedetect_me\platedetect_me_cpp\Debug\”。
+       InitializeBuildStatus:
+         正在创建“Debug\platedetect_me_cpp.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       ClCompile:
+         d:\visual_studio_2010\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt DetectRegions.cpp main.cpp
+         main.cpp
+         DetectRegions.cpp
+         正在生成代码...
+     1>c:\users\administrator\desktop\test\platedetect_me\platedetect_me_cpp\platedetect_me_cpp\detectregions.cpp(20): error C4716: “getFilename”: 必须返回一个值
+     1>c:\users\administrator\desktop\test\platedetect_me\platedetect_me_cpp\platedetect_me_cpp\detectregions.cpp(26): error C4716: “setmidle”: 必须返回一个值
+     1>c:\users\administrator\desktop\test\platedetect_me\platedetect_me_cpp\platedetect_me_cpp\detectregions.cpp(32): error C4716: “histeq”: 必须返回一个值
+     1>c:\users\administrator\desktop\test\platedetect_me\platedetect_me_cpp\platedetect_me_cpp\detectregions.cpp(38): error C4716: “classify”: 必须返回一个值
+     1>c:\users\administrator\desktop\test\platedetect_me\platedetect_me_cpp\platedetect_me_cpp\detectregions.cpp(44): error C4716: “jingquedingwei”: 必须返回一个值
+     1>已完成生成项目“C:\Users\Administrator\Desktop\test\platedetect_me\platedetect_me_cpp\platedetect_me_cpp\platedetect_me_cpp.vcxproj”(build 个目标)的操作 - 失败。
+
+生成失败。
+
+已用时间 00:00:02.04
