@@ -44,9 +44,39 @@ Mat DetectRegions::findplate(Mat input)
 		cout<<"清楚前的轮廓数contours.size = "<<contours.size()<<endl;
 		imshow("初次检测的所有轮廓",result1);
 	}
+	
+
+	vector<vector<Point>>::iterator itc=contours.begin();
+	vector<RotatedRect> rects;
+
+	while(itc!=contours.end())
+	{
+		RotatedRect mr=minAreaRect(Mat(*itc));
+		if (!verifySizes(mr))
+		{itc=contours.erase(itc);
+		} 
+		else
+		{++itc;
+		rects.push_back(mr);
+		}
+	}
+	
+	if (showSteps)
+	{
+		Mat result2;
+		input.copyTo(result2);
+		for (int i=0;i<rects.size();i++)
+		{
+			Rect r0=boundingRect(Mat(contours[i]));
+			rectangle(result2,r0,cv::Scalar(0,255,255),2);
+		}
+		imshow("可能的车牌区域",result2);
+		cout<<"利用面积和横纵比清楚后轮廓数为contours.size()= "<<contours.size()<<endl;
+	}
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
+
 }
 
 Mat DetectRegions::colorMatch(const Mat& src,const Color r)
@@ -161,7 +191,28 @@ Mat DetectRegions::sobelyuchuli(Mat in)
 	return img_threshold;
 }
 
+bool DetectRegions::verifySizes(RotatedRect mr)
+{
+	float error=0.4;
+	float  aspect=440/140;//车牌长宽比例
+	int min=15*aspect*15;
+	int max=125*aspect*125;
+	float rmin=aspect*(1-error);
+	float rmax=aspect*(1+error);
 
+	int area=mr.size.height*mr.size.width;
+	float r=(float)mr.size.width/(float)mr.size.height;
+	if(r<1)
+		float r=(float)mr.size.height/(float)mr.size.width;
+	if ((area<min||area>>max)||(r<rmin||r>rmax))
+	{return false;
+	} 
+	else
+	{return true;
+	}
+
+
+}
 
 
 
