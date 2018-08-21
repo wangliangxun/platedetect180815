@@ -1,0 +1,56 @@
+
+Administrator@DESKTOP-1QHVNLC MINGW64 ~/Desktop/test/platedetect_me (master)
+$ git add .
+
+Administrator@DESKTOP-1QHVNLC MINGW64 ~/Desktop/test/platedetect_me (master)
+$ git rm -rf platedetect_me_cpp/ipch/
+rm 'platedetect_me_cpp/ipch/platedetect_me_cpp-705238aa/platedetect_me_cpp-76ff792e.ipch'
+
+Administrator@DESKTOP-1QHVNLC MINGW64 ~/Desktop/test/platedetect_me (master)
+$ git rm -rf platedetect_me_cpp/platedetect_me_cpp.sdf
+rm 'platedetect_me_cpp/platedetect_me_cpp.sdf'
+
+Administrator@DESKTOP-1QHVNLC MINGW64 ~/Desktop/test/platedetect_me (master)
+$ git commit -m "add findplate to minAreaRect"
+[master 7478ae7] add findplate to minAreaRect
+ 3 files changed, 51 insertions(+)
+
+Administrator@DESKTOP-1QHVNLC MINGW64 ~/Desktop/test/platedetect_me (master)
+$ git push -u origin master
+Counting objects: 7, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (7/7), 16.82 KiB | 1.87 MiB/s, done.
+Total 7 (delta 4), reused 0 (delta 0)
+remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
+To https://github.com/wangliangxun/platedetect180815.git
+   0a79bf9..7478ae7  master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+
+Administrator@DESKTOP-1QHVNLC MINGW64 ~/Desktop/test/platedetect_me (master)
+$ git log
+commit 93215b7fdbccbfcadc3f493e6a315642883debb7 (HEAD -> master, origin/master)
+Author: wangliangxun <wangliangxun@whu.edu.cn>
+Date:   Tue Aug 21 22:24:29 2018 +0800
+
+    更新findplate函数，根据面积和纵横比清除轮廓
+
+commit 7478ae7c55fce6c1adb15884361cb4087d4fe223
+Author: wangliangxun <wangliangxun@whu.edu.cn>
+Date:   Tue Aug 21 21:18:34 2018 +0800
+
+    add findplate to minAreaRect
+
+commit 0a79bf91255abe63d3f561da3d5d9d035219900a
+Author: wangliangxun <wangliangxun@whu.edu.cn>
+Date:   Sun Aug 19 21:50:48 2018 +0800
+
+    add opencv函数.xlsx
+
+commit fdfb8ce18915c3dda81eb2e0691322f8919bbe78
+Author: wangliangxun <wangliangxun@whu.edu.cn>
+Date:   Sun Aug 19 21:44:10 2018 +0800
+
+    add code to findcontours
+
+
