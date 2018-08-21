@@ -76,6 +76,44 @@ Mat DetectRegions::findplate(Mat input)
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
+#if 1
+	Mat src;
+	input.copyTo(src);
+	cvtColor(src,src,CV_BGR2GRAY);
+	Mat src_b=src.clone();
+	
+	char stringname[255];
+	char possibleplate[255];
+	sprintf(possibleplate,"possibleplate_");
+	
+	for (int i=0;i<rects.size();i++)
+	{
+		RotatedRect roi_rect=rects[i];
+		float r=(float)roi_rect.size.width/(float)roi_rect.size.width;
+		float roi_angle=roi_rect.angle;
+
+		Size roi_rect_size=roi_rect.size;
+		if (r<1)
+		{roi_angle=90+roi_angle;
+		swap(roi_rect_size.width,roi_rect_size.height);
+		}
+		float m_angle=60;
+		if (roi_angle-m_angle<0&&roi_angle+m_angle>0)//Èç¹û-60<roi_angle<60
+		{
+			Rect_<float> safeBoundRect;
+
+			/************************************************************************/
+			/*                                                                      */
+			/************************************************************************/
+		}
+
+	}
+
+
+
+#endif
+
+
 
 }
 
