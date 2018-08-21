@@ -52,5 +52,8 @@ Author: wangliangxun <wangliangxun@whu.edu.cn>
 Date:   Sun Aug 19 21:44:10 2018 +0800
 
     add code to findcontours
+Administrator@DESKTOP-1QHVNLC MINGW64 ~/Desktop/test/platedetect_me (master)
+$ git remote add origin https://github.com/hanyuntao/text.git
 
-
+Administrator@DESKTOP-1QHVNLC MINGW64 ~/Desktop/test/platedetect_me (master)
+$git pull --rebase origin master
