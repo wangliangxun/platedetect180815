@@ -89,7 +89,7 @@ Mat DetectRegions::findplate(Mat input)
 	for (int i=0;i<rects.size();i++)
 	{
 		RotatedRect roi_rect=rects[i];
-		float r=(float)roi_rect.size.width/(float)roi_rect.size.width;
+		float r=(float)roi_rect.size.width/(float)roi_rect.size.height;
 		float roi_angle=roi_rect.angle;
 
 		Size roi_rect_size=roi_rect.size;

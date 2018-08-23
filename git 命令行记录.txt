@@ -57,3 +57,5 @@ $ git remote add origin https://github.com/hanyuntao/text.git
 
 Administrator@DESKTOP-1QHVNLC MINGW64 ~/Desktop/test/platedetect_me (master)
 $git pull --rebase origin master
+
+only test
