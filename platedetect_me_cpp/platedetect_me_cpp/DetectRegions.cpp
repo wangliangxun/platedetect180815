@@ -101,6 +101,9 @@ Mat DetectRegions::findplate(Mat input)
 		if (roi_angle-m_angle<0&&roi_angle+m_angle>0)//如果-60<roi_angle<60
 		{
 			Rect_<float> safeBoundRect;
+			bool isFormRect=calcSafeRect(roi_rect,src,safeBoundRect);
+
+
 
 			/************************************************************************/
 			/*                                                                      */
@@ -248,11 +251,25 @@ bool DetectRegions::verifySizes(RotatedRect mr)
 	else
 	{return true;
 	}
-
-
 }
 
-
+//计算一个安全的Rect
+bool DetectRegions::calcSafeRect(const RotatedRect& roi_rect,const Mat& src,Rect_<float>& safeBoundRect)
+{
+	Rect_<float> boudRect=roi_rect.boundingRect();
+	float tl_x=boudRect.x>0?boudRect.x:0;
+	float tl_y=boudRect.y>0?boudRect.y:0;
+	float br_x=boudRect.x+boudRect.width<src.cols?boudRect.x+boudRect.width-1:src.cols-1;
+	float br_y=boudRect.y+boudRect.height<src.rows?boudRect.y+boudRect.height-1:src.rows-1;
+	
+	float roi_width=br_x-tl_x;
+	float roi_heigh=br_y-tl_y;
+	
+	if (roi_heigh<=0||roi_width<=0)
+		return false;
+	safeBoundRect=Rect_<float>(tl_x,tl_y,roi_width,roi_heigh);
+	return true;
+}
 
 
 
