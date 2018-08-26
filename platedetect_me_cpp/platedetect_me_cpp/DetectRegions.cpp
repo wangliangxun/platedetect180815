@@ -102,7 +102,30 @@ Mat DetectRegions::findplate(Mat input)
 		{
 			Rect_<float> safeBoundRect;
 			bool isFormRect=calcSafeRect(roi_rect,src,safeBoundRect);
+			if(!isFormRect)
+				continue;
+			Mat bound_mat=src(safeBoundRect);
+			Mat bound_mat_b=src_b(safeBoundRect);
 
+			Point2f roi_ref_center=roi_rect.center-safeBoundRect.tl();
+
+			Mat deskew_mat;
+
+			if ((roi_angle-3<0&&roi_angle+3>0)||roi_angle==90||roi_angle==-90)
+			{
+				deskew_mat=bound_mat;
+			}
+			else
+			{
+				Mat rotated_mat;
+				Mat rotated_mat_b;
+
+				if(!rotation(bound_mat,rotated_mat,roi_rect_size,roi_ref_center,roi_angle))
+					continue;
+				if(!rotation(bound_mat_b,rotated_mat_b,roi_rect_size,roi_ref_center,roi_angle))
+					continue;
+
+			}
 
 
 			/************************************************************************/
@@ -271,6 +294,38 @@ bool DetectRegions::calcSafeRect(const RotatedRect& roi_rect,const Mat& src,Rect
 	return true;
 }
 
+bool DetectRegions::rotation(Mat& in, Mat& out, const Size rect_size, const Point2f center, const double angle)
+{
+	Mat in_large;
+	in_large.create(in.rows*1.5,in.cols*1.5,in.type());
 
+	int x=in_large.cols/2-center.x>0?in_large.cols/2-center.x:0;
+	int y=in_large.rows/2-center.y>0?in_large.rows/2-center.y:0;
+
+	int width=x+in.cols>in_large.cols?in.cols:in_large.cols-x;
+	int heigh=y+in.rows>in_large.rows?in.rows:in_large.rows-y;
+
+	if(width!=in.cols||heigh!=in.rows)
+		return false;
+
+	Mat imageRoi=in_large(Rect(x,y,width,heigh));
+	addWeighted(imageRoi,0,in,1,0,imageRoi);
+
+	Point2f center_diff(in.cols/2,in.rows/2);
+	Point2f new_center(in_large.cols/2,in_large.rows/2);
+
+	Mat rot_mat=getRotationMatrix2D(new_center,angle,1);
+
+	Mat mat_rotated;
+	warpAffine(in_large,mat_rotated,rot_mat,Size(in_large.cols,in_large.rows),CV_INTER_CUBIC);
+
+	Mat img_crop;
+	getRectSubPix(mat_rotated,Size(rect_size.width,rect_size.height),new_center,img_crop);
+
+	return true;
+
+
+
+}
 
 
