@@ -117,6 +117,7 @@ Mat DetectRegions::findplate(Mat input)
 			}
 			else
 			{
+				//角度在3到60°之间的，首先需要旋转
 				Mat rotated_mat;
 				Mat rotated_mat_b;
 
@@ -124,6 +125,20 @@ Mat DetectRegions::findplate(Mat input)
 					continue;
 				if(!rotation(bound_mat_b,rotated_mat_b,roi_rect_size,roi_ref_center,roi_angle))
 					continue;
+				//如果图片偏斜，还需要视角转换affine
+				double roi_slope=0;
+				
+				if (isdeflection(rotated_mat_b,roi_angle,roi_slope))
+				{
+					affine(rotated_mat,deskew_mat,roi_slope);
+				} 
+				else
+				{
+					deskew_mat=rotated_mat;
+				}
+
+
+
 
 			}
 
@@ -293,7 +308,16 @@ bool DetectRegions::calcSafeRect(const RotatedRect& roi_rect,const Mat& src,Rect
 	safeBoundRect=Rect_<float>(tl_x,tl_y,roi_width,roi_heigh);
 	return true;
 }
-
+/************************************************************************/
+/*
+	参数：
+		输入安全边界mat
+		输出旋转后的mat
+		输入包络矩形尺寸
+		输入包络矩形中心-安全边界左上坐标=转化后的中心
+		包络矩形旋转角度
+*/
+/************************************************************************/
 bool DetectRegions::rotation(Mat& in, Mat& out, const Size rect_size, const Point2f center, const double angle)
 {
 	Mat in_large;
