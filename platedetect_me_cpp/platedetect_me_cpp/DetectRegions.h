@@ -22,7 +22,7 @@ private:
 	Mat findplate(Mat input);
 	bool verifySizes(RotatedRect mr);
 	bool calcSafeRect(const RotatedRect& roi_rect,const Mat& src,Rect_<float>& safeBoundRect);
-	bool affine(Mat& in,Mat& out,const double slope);
+	void affine(Mat& in,Mat& out,const double slope);
 	bool isdeflection(const Mat& in, const double angle, double& slope);
 	bool rotation(Mat& in, Mat& out, const Size rect_size, const Point2f center, const double angle);
 	Mat sobelyuchuli(Mat in);

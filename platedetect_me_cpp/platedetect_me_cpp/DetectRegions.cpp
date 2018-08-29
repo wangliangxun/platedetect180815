@@ -361,7 +361,7 @@ bool DetectRegions::isdeflection(const Mat& in, const double angle, double& slop
 	assert(in.channels()==1);
 
 	int comp_index[3];
-	int len[3];
+	int len[3];//存的是像素值不等于0的第一列的列值;
 
 	comp_index[0]=nRows/4*1;
 	comp_index[1]=nRows/4*2;
@@ -406,7 +406,43 @@ bool DetectRegions::isdeflection(const Mat& in, const double angle, double& slop
 //扭变操作//通过opencv的仿射变换
 void DetectRegions::affine(Mat& in,Mat& out,const double slope)
 {
-	;
+	Point2f dstTri[3];
+	Point2f plTri[3];
+
+	int height=in.rows;
+	int width=in.cols;
+	double xiff=abs(slope)*height;
+	if (slope>0)
+	{
+		//左偏形，新起点坐标系在xiff/2位置
+		plTri[0]=Point2f(0,0);
+		plTri[1]=Point2f(width-xiff-1,0);
+		plTri[2]=Point2f(0+xiff,height-1);
+		dstTri[0]=Point2f(xiff/2,0);
+		dstTri[1]=Point2f(width-1-xiff/2,0);
+		dstTri[2]=Point2f(xiff/2,height-1);
+	} 
+	else
+	{
+		//左偏型，新起点坐标系在 -xiff/2位置
+		plTri[0] = Point2f(0 + xiff, 0);
+		plTri[1] = Point2f(width - 1, 0);
+		plTri[2] = Point2f(0, height - 1);
+
+		dstTri[0] = Point2f(xiff/2, 0);
+		dstTri[1] = Point2f(width - 1 - xiff + xiff/2, 0);
+		dstTri[2] = Point2f(xiff/2, height - 1);
+	}
+	Mat warp_mat=getAffineTransform(plTri,dstTri);
+	Mat affine_mat;
+	affine_mat.create(height,width,CV_8UC3);
+	if (in.rows>HEIGHT||in.cols>WIDTH)
+	{warpAffine(in,affine_mat,warp_mat,affine_mat.size(),CV_INTER_AREA);
+	} 
+	else
+	{warpAffine(in,affine_mat,warp_mat,affine_mat.size(),CV_INTER_CUBIC);
+	}
+	out=affine_mat;
 }
 
 
