@@ -7,11 +7,10 @@ void DetectRegions::setFilename(string s)
 }
 Mat DetectRegions::run(Mat input)
 {
+	//
 	Mat tmp=findplate(input);
+	//return detected regions
 	return tmp;
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
 }
 Mat DetectRegions::findplate(Mat input)
 {
@@ -73,9 +72,7 @@ Mat DetectRegions::findplate(Mat input)
 		imshow("可能的车牌区域",result2);
 		cout<<"利用面积和横纵比清楚后轮廓数为contours.size()= "<<contours.size()<<endl;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
+
 #if 1
 	Mat src;
 	input.copyTo(src);
@@ -136,26 +133,44 @@ Mat DetectRegions::findplate(Mat input)
 				{
 					deskew_mat=rotated_mat;
 				}
-
-
-
-
 			}
+			Mat plate_mat;
+			plate_mat.create(HEIGHT,WIDTH,CV_8UC1);
 
+			if(deskew_mat.cols>=WIDTH||deskew_mat.rows>=HEIGHT)
+				resize(deskew_mat,plate_mat,plate_mat.size(),0,0,INTER_AREA);
+			else
+				resize(deskew_mat,plate_mat,plate_mat.size(),0,0,INTER_CUBIC);
 
-			/************************************************************************/
-			/*                                                                      */
-			/************************************************************************/
-		}
+			threshold(plate_mat,plate_mat,0,255,CV_THRESH_OTSU);
+			sprintf(stringname,"%s%d.jpg","possibleplate_",i);
 
-	}
+			if(showSteps)
+				imshow(stringname,plate_mat);
+#if 1
+			//利用SVM判别是否为车牌
+			CvSVM svm;
+			svm.load("svm.xml");
 
+			Mat image;
+			//由于训练时采用的是彩图，这里需要转换颜色空间
+			cvtColor(plate_mat,image,CV_GRAY2BGR);
 
+			Mat p=image.reshape(1,1);
+			p.convertTo(p,CV_32FC1);
 
+			int response=(int)svm.predict(p);
+			if (response==1)
+			{
+				output=imge;
+				if(showSteps)
+					imshow("plate",image);
+			}
 #endif
-
-
-
+		}
+	}
+#endif
+	return output;
 }
 
 Mat DetectRegions::colorMatch(const Mat& src,const Color r)
