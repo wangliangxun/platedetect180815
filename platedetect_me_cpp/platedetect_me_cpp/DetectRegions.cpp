@@ -394,6 +394,10 @@ bool DetectRegions::isdeflection(const Mat& in, const double angle, double& slop
 		double slope_can_2=double(len[1]-len[0])/double(comp_index[0]);
 		double slope_can_3=double(len[2]-len[1])/double(comp_index[0]);
 		slope=abs(slope_can_1-g)<=abs(slope_can_2-g)?slope_can_1:slope_can_2;
+		//							   tan(a)+tan(b)
+		//这儿用到了一个近似：tan(a+b)=--------------≈tan(a)+tan(b)[tan(b)→0]
+		//							   1-tan(a)tan(b)
+
 		return true;
 	} 
 	else
@@ -433,7 +437,7 @@ void DetectRegions::affine(Mat& in,Mat& out,const double slope)
 		dstTri[1] = Point2f(width - 1 - xiff + xiff/2, 0);
 		dstTri[2] = Point2f(xiff/2, height - 1);
 	}
-	Mat warp_mat=getAffineTransform(plTri,dstTri);
+	Mat warp_mat=getAffineTransform(plTri,dstTri);//求变换矩阵
 	Mat affine_mat;
 	affine_mat.create(height,width,CV_8UC3);
 	if (in.rows>HEIGHT||in.cols>WIDTH)
