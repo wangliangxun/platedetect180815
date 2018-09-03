@@ -194,11 +194,59 @@ int main()
 		areas.push_back(itc->size());//??????????????????????????????????????????
 	}
 	sort(areas.begin(),areas.end());//???????????????????????????????????????????
+
+	//输出排序结果
+	/*for (int i=0;i<areas.size();i++)
+	{cout<<"area["<<i<<"]:"<<areas[i]<<endl;
+	}*/
+
+	int number_7=areas.size()-7;
+	if (number_7<0)
+	{
+		cout<<"error!轮廓数小于7"<<endl;
+		return 0;
+	}
+	int contoursmin_7=areas[number_7];
+	/*cout<<"areas[number_7]:"<<contoursmin_7<<endl;*/
 	/************************************************************************/
-	/*                                                                      */
+	/* 删除过大或者过小的轮廓，阈值是通过输出轮廓的值观察而得来，
+	后来采用排序找出第7大轮廓，车牌共有7个字符，理论上是比其他干扰的轮廓大
+	*/
 	/************************************************************************/
+	int cmin=contoursmin_7;
+	int cmax=100;
+	itc=contours.begin();
+	while (itc!=contours.end())
+	{
+		if(itc->size()<cmin||itc->size()>cmax)
+			itc=contours.erase(itc);
+		else
+			++itc;
+	}
+	if (contours.size()>7)
+	{
+		cout<<"按第7大选出后的轮廓数为："<<contours.size()<<endl;
+	}
+	Mat result=plateroi.clone();
+	cvtColor(result,result,CV_GRAY2BGR);
+	//drawContours(result,contours,-1,Scalar(0,0,255),1);//画出轮廓
+	//imshow("轮廓",result);
+	Mat kuangding=result.clone();
+
+	if (showSteps)
+	{
+		for (int i=0;i<contours.size();i++)
+		{
+			Rect r=boundingRect(Mat(contours[i]));
+			rectangle(kuangding,r,Scalar(0,255,0),1);
+		}
+		imshow("矩形框定位置",kuangding);
+	}
 
 #endif
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
 
 
 
