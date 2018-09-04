@@ -43,7 +43,15 @@ string getFilename(string s)
 ////////////////////////////////setmidle//////////////////////////////////////////
 Mat setmidle(Mat pic)
 {
-
+	Mat src=pic.clone();
+	int size=(src.rows>src.cols)?src.rows:src.cols;
+	Mat dst(Size(size,size),src.type(),Scalar(0,0,0));
+	int x=(int)floor((float)(size-src.cols)/2.0f);
+	int y=(int)floor((float)(size-src.rows)/2.0f);
+	Rect r(x,y,src.cols,src.rows);
+	Mat dstroi=dst(r);
+	addWeighted(dstroi,0,src,1,0,dstroi);
+	return dst;
 }
 
 ///////////////////////////////histeq///////////////////////////////////////////
@@ -244,6 +252,57 @@ int main()
 	}
 
 #endif
+
+#if 1
+	/*由于根据轮廓框出的隽星所在的字符无法确定到底是第几个字符,
+	这里对矩形的x坐标进行排序，
+	x坐标排第几就对应着第几个字符*/
+	Mat pic1;
+	vector<Mat> pic;
+	vector<int> position_x;
+	for (int i=0;i<contours.size();i++)
+	{
+		Rect r=boundingRect(Mat(contours[i]));
+		int x=r.x;
+		position_x.push_back(x);
+	}
+	sort(position_x.begin(),position_x.end());
+	for (int j=0;j<position_x.size();j++)
+	{
+		int dangqiandian=position_x[j];
+		for (int i=0;i<contours.size();i++)
+		{
+			Rect r=boundingRect(Mat(contours[i]));
+			if(dangqiandian==r.x)
+				pic.push_back(result(r));
+		}
+
+	}
+	char platepic[255];
+	int zongzifu=7;
+	if (position_x.size()<7)
+	{
+		cout<<"cannot find 7 个字符"<<endl;
+		return 0;
+	}
+	//cout<<"position_x.size() is"<<position_x.size()<<endl;
+	for (int j=0;j<7;j++)
+	{
+		sprintf(platepic,"%s_%d.jpg","platepic",j);
+		pic[j]=setmidle(pic[j]);
+		imwrite(platepic,pic[j]);
+	}
+	if (showSteps)
+	{
+		int number_zifu=1;
+		imshow("diyige",pic[number_zifu]);
+	}
+	/************************************************************************/
+	/* 写到这儿来了    setmidle函数还没写                                   */
+	/************************************************************************/
+#endif
+
+
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/

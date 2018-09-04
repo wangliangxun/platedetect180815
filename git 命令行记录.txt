@@ -59,3 +59,17 @@ Administrator@DESKTOP-1QHVNLC MINGW64 ~/Desktop/test/platedetect_me (master)
 $git pull --rebase origin master
 
 only test
+
+
+
+
+
+
+
+
+
+git add .
+git rm -rf platedetect_me_cpp/ipch/
+git rm -rf platedetect_me_cpp/platedetect_me_cpp.sdf
+git commit -m "complete the jingquedingwei function(消除边框影响)，update the file.doc"
+git push -u origin master
