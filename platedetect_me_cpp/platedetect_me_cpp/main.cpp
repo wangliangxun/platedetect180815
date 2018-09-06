@@ -58,12 +58,29 @@ Mat setmidle(Mat pic)
 Mat histeq(Mat in)
 {
 
+
 }
 
 ///////////////////////////////classify///////////////////////////////////////////
 int classify(Mat& image)
 {
+	Mat trainTempImg;
+	trainTempImg=Mat::zeros(28,28,CV_8UC1);
+	resize(image,trainTempImg,trainTempImg.size());
 
+	HOGDescriptor *hog=new HOGDescriptor(cvSize(28,28),cvSize(14,14),cvSize(7,7),cvSize(7,7),9);
+	vector<float>descriptors;
+	hog->compute(trainTempImg,descriptors,Size(1,1),Size(0,0));
+	Mat SVMtrainMat;
+	SVMtrainMat.create(1,descriptors.size(),CV_32FC1);
+	int n=0;
+	for (vector<float>::iterator iter=descriptors.begin();iter!=descriptors.end();iter++)
+	{
+		SVMtrainMat.at<float>(0,n)=*iter;
+		n++;
+	}
+	int ret=svm.predict(SVMtrainMat);
+	return ret;
 }
 
 ////////////////////////////////jingquedingwei//////////////////////////////////////////
@@ -297,26 +314,46 @@ int main()
 		int number_zifu=1;
 		imshow("diyige",pic[number_zifu]);
 	}
-	/************************************************************************/
-	/* 写到这儿来了    setmidle函数还没写                                   */
-	/************************************************************************/
+	
 #endif
 
+//字符识别
+#if 1
+	svm.load("HOG_SVM.xml");
+	vector<int> outnumber;
+	for (int j=0;j<7;j++)
+	{
+		Mat imgetest=pic[j];
+		int zifu=classify(imgetest);
+		outnumber.push_back(zifu);
+	}
 
-/************************************************************************/
-/*                                                                      */
-/************************************************************************/
+	cout<<"=======================================================\n";
+	cout<<"所检测到的车牌为："<<endl;
 
+	for (int i=1;i<outnumber.size();i++)
+	{
+		if(outnumber[i]<60)
+			cout<<outnumber[i]<<" ";
+		else
+			cout<<char(outnumber[i])<<" ";
+		if(i==outnumber.size()-1)
+			cout<<endl;
+	}
+	cout<<"=======================================================\n";
+#endif
+	duration=static_cast<double>(getTickCount())-duration;
+	duration=getTickFrequency()/duration;
+	cout<<"检测用时："<<duration<<"s"<<endl;
 
-
-
-
-
-
-
-
-
-
+	for (;;)
+	{
+		int c;
+		c=cvWaitKey(10);
+		if((char)c==27)
+			break;
+	}
+	return 0;
 
 }
 
