@@ -5,6 +5,11 @@ void DetectRegions::setFilename(string s)
 {
 	filename=s;
 }
+DetectRegions::DetectRegions()
+{
+	showSteps=false;
+	saveRegions=false;
+}
 Mat DetectRegions::run(Mat input)
 {
 	//

@@ -57,7 +57,8 @@ Mat setmidle(Mat pic)
 ///////////////////////////////histeq///////////////////////////////////////////
 Mat histeq(Mat in)
 {
-
+	Mat out(in.size(),in.type());
+	return out;
 
 }
 
@@ -145,7 +146,7 @@ Mat jingquedingwei(Mat in)
 		}
 	}
 	Mat resizepic(Size(plateroi.cols+20,plateroi.rows+20),CV_8UC1,cv::Scalar(0));
-	for (j=0;j<nr;j++)
+	for (int j=0;j<nr;j++)
 	{
 		uchar* data1=plateroi.ptr<uchar>(j);
 		uchar* data2=resizepic.ptr<uchar>(j+10);
